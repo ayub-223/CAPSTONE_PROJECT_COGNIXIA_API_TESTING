@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "e6f52fe3-ba90-4c28-b0a4-06d3dd6aa22b",
+		"name": "CAPSTONE PROJECT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44269095",
+		"_collection_link": "https://ayub-991391.postman.co/workspace/Sample_learning~8abfbcf0-70f3-4de9-913a-6ca217daf591/collection/44269095-e6f52fe3-ba90-4c28-b0a4-06d3dd6aa22b?action=share&source=collection_link&creator=44269095"
+	},
+	"item": [
+		{
+			"name": "GET ALL THE MOVIES",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Starting test suite for: Get All Movies API endpoint.\");\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    console.log(\"Checking if status code is 200\");\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Movie available in response text\", function () {\r",
+							"    console.log(\"Verifying if response contains 'K.G.F: Chapter 2'\");\r",
+							"    pm.expect(pm.response.text()).to.include(\"K.G.F: Chapter 2\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Title matches expected movie\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var movieTitle = jsonData[0].title;\r",
+							"    console.log(\"First movie title from response:\", movieTitle); \r",
+							"    pm.expect(movieTitle).to.eql(\"K.G.F: Chapter 2\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 23000ms\", function () {\r",
+							"    console.log(\"Response time:\", pm.response.responseTime, \"ms\");\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(23000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"    console.log(\"Content-Type header:\", contentType);\r",
+							"    pm.expect(contentType).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"console.log(\"Test suite completed for: GET /movies\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://movies-api-fs57.onrender.com/api/movies",
+					"protocol": "https",
+					"host": [
+						"movies-api-fs57",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST THE NEW MOVIE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test suite: POST /movies\r",
+							"console.log(\"Starting test suite for: POST /movies\");\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"movieId\", jsonData._id);  \r",
+							"console.log(\"Saved movieId:\", jsonData._id);\r",
+							"\r",
+							"\r",
+							"\r",
+							"// Status code should be 201 Created\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    console.log(\"Checking status code...\");\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Response should be JSON\r",
+							"pm.test(\"Response Content-Type is application/json\", function () {\r",
+							"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"    console.log(\"Content-Type header:\", contentType);\r",
+							"    pm.expect(contentType).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Response should contain a title property that is a string\r",
+							"pm.test(\"Response contains movie title as string\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    console.log(\"Response body:\", jsonData);\r",
+							"    pm.expect(jsonData).to.have.property(\"title\");\r",
+							"    pm.expect(jsonData.title).to.be.a(\"string\");\r",
+							"    console.log(\"Movie title:\", jsonData.title); \r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Response body should contain the expected movie title\r",
+							"pm.test(\"Movie title matches\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"KGF\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"console.log(\"Test suite completed for: POST /movies\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"KGF\",\r\n  \"duration\": 165,\r\n  \"description\": \"In 1951, Raja RockyKrishnappa Bairya was born to a poor, underage girl named       Shanti. On the same day, government officials, accompanied by Suryavardhan, arrived to investigate a strange yellow rock discovered by workers digging a well in southern Mysore State.\",\r\n  \"rating\": 8.2,\r\n  \"language\": \"Kannada\",\r\n  \"genre\": [\r\n            \"Action\", \"Crime\", \"Drama\",\"Thriller\"\r\n        ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://movies-api-fs57.onrender.com/api/movies",
+					"protocol": "https",
+					"host": [
+						"movies-api-fs57",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"movies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET MOVIES BY ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Log start\r",
+							"console.log(\"Running GET movie by ID tests\");\r",
+							"\r",
+							"console.log(\"Response body:\", pm.response.json());\r",
+							"\r",
+							"// Check status code 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Check Content-Type is JSON\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Validate the movie title matches expected\r",
+							"pm.test(\"Movie title is KGF: Chapter 1\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"KGF\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Interstellar\",\r\n  \"duration\": 169,\r\n  \"description\": \"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.\",\r\n  \"rating\": 8.6,\r\n  \"language\": \"English\",\r\n  \"genre\": [\"Sci-Fi\", \"Adventure\", \"Drama\"]\r\n}\r\n"
+				},
+				"url": {
+					"raw": "https://movies-api-fs57.onrender.com/api/movies/{{movieId}}",
+					"protocol": "https",
+					"host": [
+						"movies-api-fs57",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"movies",
+						"{{movieId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE THE MOVIE USING THE ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Starting test suite for: PUT /movies\");\r",
+							"\r",
+							"// Status code should be 200 OK\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Response Content-Type is JSON\r",
+							"pm.test(\"Response Content-Type is application/json\", function () {\r",
+							"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+							"    pm.expect(contentType).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"// Movie title is updated (optional, if you update title)\r",
+							"pm.test(\"Movie title is updated\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    console.log(\"Updated title received:\", jsonData.title);\r",
+							"    pm.expect(jsonData).to.have.property(\"title\");\r",
+							"    pm.expect(jsonData.title).to.eql(\"KGF: Chapter 1\"); \r",
+							"});\r",
+							"\r",
+							"// Duration is updated as expected\r",
+							"pm.test(\"Duration is updated\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    console.log(\"Updated duration received:\", jsonData.duration);\r",
+							"    pm.expect(jsonData).to.have.property(\"duration\");\r",
+							"    pm.expect(jsonData.duration).to.eql(120);  \r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response time is less than 6000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(6000);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Test suite completed for: PUT /movies\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"KGF: Chapter 1\",\r\n  \"duration\": 120\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://movies-api-fs57.onrender.com/api/movies/{{movieId}}",
+					"protocol": "https",
+					"host": [
+						"movies-api-fs57",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"movies",
+						"{{movieId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE THE MOVIE USING THE ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Starting test suite for: DELETE /movies\");\r",
+							"\r",
+							"// Status code should be 200 or 204\r",
+							"pm.test(\"Status code is 200 or 204\", function () {\r",
+							"    const statusCode = pm.response.code;\r",
+							"    console.log(\"Status code received:\", statusCode);\r",
+							"    pm.expect(statusCode === 200 || statusCode === 204).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Check if the response contains deletion confirmation\r",
+							"pm.test(\"Response contains deletion confirmation\", function () {\r",
+							"    const responseBody = pm.response.text();\r",
+							"    console.log(\"Response body:\", responseBody);\r",
+							"    pm.expect(responseBody).to.include(\"Movie deleted\");\r",
+							"});\r",
+							"\r",
+							"// Response time should be under 3000ms\r",
+							"pm.test(\"Response time is under 3000ms\", function () {\r",
+							"    const responseTime = pm.response.responseTime;\r",
+							"    console.log(\"Response time (ms):\", responseTime);\r",
+							"    pm.expect(responseTime).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"console.log(\"Test suite completed for: DELETE /movies\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"message\": \"Movie deleted\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://movies-api-fs57.onrender.com/api/movies/{{movieId}}",
+					"protocol": "https",
+					"host": [
+						"movies-api-fs57",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"movies",
+						"{{movieId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

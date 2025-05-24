@@ -1,0 +1,15 @@
+{
+	"id": "9d60bc86-84ce-436f-b0dd-ea6c5d8a7bf0",
+	"name": "Capstone environment",
+	"values": [
+		{
+			"key": "movieId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-05-24T12:17:46.538Z",
+	"_postman_exported_using": "Postman/11.46.6"
+}
